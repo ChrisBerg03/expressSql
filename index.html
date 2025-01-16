@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>test data</title>
         <script src="/js/script.js" defer></script>
+        <link rel="stylesheet" href="/css/basic.css"></link>
     </head>
     <body>
-        <form>
+        <!-- <form id="postForm">
             <label for="contentInput">Your content</label>
             <input
                 name="contentInput"
@@ -15,7 +16,19 @@
                 placeholder="content here"
             />
             <button id="contentBtn">CLick me</button>
-            <div id="contentContainer"></div>
         </form>
+        <div id="contentContainer"></div> -->
+        <div id="blogPostContainer">
+            <label>Create a title</label>
+            <input id="createTitle" placeholder="add a title" />
+
+            <label>add content</label>
+            <input id="createContent" placeholder="add content" />
+
+            <label>add an image url</label>
+            <input id="createImageUrl" placeholder="add an image Url" />
+            <button id="blogPostBtn">create a post</button>
+        </div>
+        <div id="blogContainer"></div>
     </body>
 </html>

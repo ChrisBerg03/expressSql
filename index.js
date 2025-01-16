@@ -63,35 +63,108 @@ app.use(express.json());
 //     res.json(result);
 // });
 
-app.get("/test", async (req, res) => {
+// app.get("/test", async (req, res) => {
+//     const sort = req.query.sort || "id";
+//     const sortOrder = req.query.sortOrder || "ASC";
+
+//     const [result] = await connection.query(
+//         `SELECT * FROM test ORDER BY ${sort} ${sortOrder}`
+//     );
+//     res.json(result);
+// });
+
+// app.get("/test/:id", async (req, res) => {
+//     const { id } = req.params;
+//     const [result] = await connection.query(
+//         "SELECT * FROM test WHERE id=" + id
+//     );
+//     res.json(result);
+// });
+
+// app.post("/test", async (req, res) => {
+//     const { content } = req.body;
+
+//     const [result] = await connection.query(
+//         `
+//     INSERT INTO test(content)
+//     VALUES (?);`,
+//         [content]
+//     );
+
+//     res.send("success");
+// });
+
+// app.listen(port, () => {
+//     console.log("Server started on port:", port);
+// });
+
+// sort
+app.get("/blog", async (req, res) => {
     const sort = req.query.sort || "id";
     const sortOrder = req.query.sortOrder || "ASC";
 
     const [result] = await connection.query(
-        `SELECT * FROM test ORDER BY ${sort} ${sortOrder}`
+        `SELECT * FROM blog ORDER BY ${sort} ${sortOrder}`
     );
     res.json(result);
 });
 
-app.get("/test/:id", async (req, res) => {
-    const { id } = req.params;
+// get by id
+app.get("/blog/:id", async (req, res) => {
+    const id = Number(req.params.id);
     const [result] = await connection.query(
-        "SELECT * FROM test WHERE id=" + id
+        `SELECT * FROM blog WHERE id=${id}`
     );
     res.json(result);
 });
 
-app.post("/test", async (req, res) => {
-    const { content } = req.body;
+// get all blog
+app.get("/blog", async (req, res) => {
+    const [result] = await connection.query(`
+        SELECT * FROM blog
+        `);
+    res.json(result);
+});
+
+// post content
+app.post("/blog", async (req, res) => {
+    const { title, content, imageUrl } = req.body;
+
+    try {
+        const [result] = await connection.query(
+            `
+            INSERT INTO blog (title, content, imageUrl)
+            VALUES (?, ?, ?);
+            `,
+            [title, content, imageUrl]
+        );
+
+        res.status(201).send({
+            message: "Blog post created successfully",
+        });
+    } catch (error) {
+        console.error("Error", error);
+    }
+});
+
+// post comments
+app.post("/blog", async (req, res) => {
+    const { comments } = req.body;
 
     const [result] = await connection.query(
         `
-    INSERT INTO test(content)
+    INSERT INTO blog(comments)
     VALUES (?);`,
-        [content]
+        [comments]
     );
 
-    res.send("success");
+    res.send("comment success");
+});
+
+app.delete("/blog/", async (req, res) => {
+    const id = Number(req.params.id);
+    const [result] = await connection.query(`DELETE FROM blog WHERE id=${id}`);
+    res.json(result);
 });
 
 app.listen(port, () => {
